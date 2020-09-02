@@ -17,7 +17,8 @@
     "moment": "^2.27.0",
     "striptags": "^3.1.1",
     "vue": "^2.6.11",
-    "vue-axios": "^2.1.5"
+    "vue-axios": "^2.1.5",
+    "vue-recaptcha-v3": "^1.9.0"
   },
   "devDependencies": {
     "@babel/polyfill": "^7.7.0",

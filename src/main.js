@@ -5,6 +5,7 @@ import './plugins/bootstrap-vue'
 import App from './App.vue'
 import axios from 'axios'
 import VueAxios from "vue-axios";
+// import { VueReCaptcha } from "vue-recaptcha-v3";
 
 Vue.config.productionTip = false
 
