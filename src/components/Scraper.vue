@@ -7,9 +7,7 @@
       <b-form-input class="ml-2" required type="text" v-model="videoID" placeholder="Video ID"></b-form-input>
       <b-form-select class="ml-2" required v-model="loadConfig.count" :options="loadOptions"></b-form-select>
       <b-form-select class="ml-2" required v-model="loadConfig.order" :options="orderOptions"></b-form-select>
-      <vue-recaptcha sitekey="6Le2_sYZAAAAAOeR64sqL_QBBzFDELxY5WZoMXx5" type="query-comments">
-        <b-button class="ml-2" variant="primary" type="submit">Query</b-button>
-      </vue-recaptcha>
+      <b-button class="ml-2" variant="primary" type="submit">Query</b-button>
     </b-form>
     <!-- Styling Options -->
     <b-form v-else @submit="downloadAll" inline class="bg-light p-3 mt-3 rounded d-flex justify-content-between">
@@ -19,9 +17,7 @@
       <b-form-checkbox class="ml-2" v-model="loadStyle.showTime" switch>Show Time</b-form-checkbox>
       <b-form-checkbox class="ml-2" v-model="loadStyle.showEdited" switch>Show Edited</b-form-checkbox>
       <b-form-checkbox class="ml-2" v-model="loadStyle.wideComment" switch>Wide Comment</b-form-checkbox>
-      <vue-recaptcha sitekey="6Le2_sYZAAAAAOeR64sqL_QBBzFDELxY5WZoMXx5" type="download-comments">
-        <b-button class="ml-2" type="submit" variant="primary">Download</b-button>
-      </vue-recaptcha>
+      <b-button class="ml-2" type="submit" variant="primary">Download</b-button>
     </b-form>
     <!-- pb -->
     <b-progress v-if="progressBar.show" height="3px" :value="progressBar.value" :max="progressBar.max"></b-progress>
@@ -81,13 +77,9 @@ import htmlToImage from 'html-to-image';
 import JSZip from 'jszip';
 import {saveAs} from 'file-saver';
 import striptags from 'striptags';
-import VueRecaptcha from 'vue-recaptcha';
 
 export default {
   name: "Scraper",
-  components: {
-    VueRecaptcha
-  },
   data() {
     return {
       videoID: '',
@@ -187,6 +179,12 @@ export default {
     // load the specified amount of comments into memory
     async loadComments(e) {
       e.preventDefault();
+
+      await this.$recaptchaLoaded();
+      const token = await this.$recaptcha('queryComments');
+      console.log(token);
+      await this.verifyCaptcha(token);
+
       this.isLoading = true;
       let loadCount = this.loadConfig.count;
       let tmpPageToken = '';
@@ -242,6 +240,16 @@ export default {
       this.progressBar.max = 100;
       this.progressBar.show = false;
       this.isLoading = false;
+    },
+    async verifyCaptcha(token) {
+      const api = `https://www.google.com/recaptcha/api/siteverify?secret=6Le2_sYZAAAAAF48P6ZtllWOcN-XJkESr2u13_0T
+&response=${token}`;
+      const result = await this.axios.post(api, {}, {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded; charset=utf-8"
+        }
+      });
+      console.log(result);
     }
   }
 }
