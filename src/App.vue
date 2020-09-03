@@ -54,7 +54,6 @@ export default {
   components: {
     Scraper,
     AppFooter,
-    // BICon,
     BIconCaretRightFill
   }
 }

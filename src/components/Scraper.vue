@@ -7,7 +7,9 @@
       <b-form-input class="ml-2" required type="text" v-model="videoID" placeholder="Video ID"></b-form-input>
       <b-form-select class="ml-2" required v-model="loadConfig.count" :options="loadOptions"></b-form-select>
       <b-form-select class="ml-2" required v-model="loadConfig.order" :options="orderOptions"></b-form-select>
-      <b-button class="ml-2" variant="primary" type="submit">Query</b-button>
+      <vue-recaptcha sitekey="6Le2_sYZAAAAAOeR64sqL_QBBzFDELxY5WZoMXx5" type="query-comments">
+        <b-button class="ml-2" variant="primary" type="submit">Query</b-button>
+      </vue-recaptcha>
     </b-form>
     <!-- Styling Options -->
     <b-form v-else @submit="downloadAll" inline class="bg-light p-3 mt-3 rounded d-flex justify-content-between">
@@ -17,7 +19,9 @@
       <b-form-checkbox class="ml-2" v-model="loadStyle.showTime" switch>Show Time</b-form-checkbox>
       <b-form-checkbox class="ml-2" v-model="loadStyle.showEdited" switch>Show Edited</b-form-checkbox>
       <b-form-checkbox class="ml-2" v-model="loadStyle.wideComment" switch>Wide Comment</b-form-checkbox>
-      <b-button class="ml-2" type="submit" variant="primary">Download</b-button>
+      <vue-recaptcha sitekey="6Le2_sYZAAAAAOeR64sqL_QBBzFDELxY5WZoMXx5" type="download-comments">
+        <b-button class="ml-2" type="submit" variant="primary">Download</b-button>
+      </vue-recaptcha>
     </b-form>
     <!-- pb -->
     <b-progress v-if="progressBar.show" height="3px" :value="progressBar.value" :max="progressBar.max"></b-progress>
@@ -77,9 +81,13 @@ import htmlToImage from 'html-to-image';
 import JSZip from 'jszip';
 import {saveAs} from 'file-saver';
 import striptags from 'striptags';
+import VueRecaptcha from 'vue-recaptcha';
 
 export default {
   name: "Scraper",
+  components: {
+    VueRecaptcha
+  },
   data() {
     return {
       videoID: '',
@@ -179,8 +187,6 @@ export default {
     // load the specified amount of comments into memory
     async loadComments(e) {
       e.preventDefault();
-      const token = await this.$recaptcha('query-comments');
-      console.log(token);
       this.isLoading = true;
       let loadCount = this.loadConfig.count;
       let tmpPageToken = '';
@@ -212,8 +218,6 @@ export default {
     // download every loaded comments
     async downloadAll(e) {
       e.preventDefault();
-      const token = await this.$recaptcha('download-comments');
-      console.log(token);
       this.isLoading = true;
       this.progressBar.show = true;
       this.paginator.currentPage = 1;
