@@ -179,6 +179,8 @@ export default {
     // load the specified amount of comments into memory
     async loadComments(e) {
       e.preventDefault();
+      const token = await this.$recaptcha('query-comments');
+      console.log(token);
       this.isLoading = true;
       let loadCount = this.loadConfig.count;
       let tmpPageToken = '';
@@ -210,6 +212,8 @@ export default {
     // download every loaded comments
     async downloadAll(e) {
       e.preventDefault();
+      const token = await this.$recaptcha('download-comments');
+      console.log(token);
       this.isLoading = true;
       this.progressBar.show = true;
       this.paginator.currentPage = 1;
