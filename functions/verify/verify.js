@@ -5,9 +5,9 @@ exports.handler = async function (event) {
         return { statusCode: 405, body: 'Method Not Allowed' };
     }
     const secret = process.env.GOOGLE_RECAPTCHA_SECRET;
+    const body = JSON.parse(event.body);
     try {
-        const api = `https://www.google.com/recaptcha/api/siteverify?secret=${secret}&response=${event.body.token}`;
-        console.log(event.body);
+        const api = `https://www.google.com/recaptcha/api/siteverify?secret=${secret}&response=${body.token}`;
         console.log(api);
         const res = await axios.post(api);
         return {
