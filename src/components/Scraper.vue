@@ -183,7 +183,6 @@ export default {
       await this.$recaptchaLoaded();
       const token = await this.$recaptcha('queryComments');
       console.log(token);
-      await this.verifyCaptcha(token);
 
       this.isLoading = true;
       let loadCount = this.loadConfig.count;
@@ -240,16 +239,6 @@ export default {
       this.progressBar.max = 100;
       this.progressBar.show = false;
       this.isLoading = false;
-    },
-    async verifyCaptcha(token) {
-      const api = `https://www.google.com/recaptcha/api/siteverify?secret=6Le2_sYZAAAAAF48P6ZtllWOcN-XJkESr2u13_0T
-&response=${token}`;
-      const result = await this.axios.post(api, {}, {
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded; charset=utf-8"
-        }
-      });
-      console.log(result);
     }
   }
 }
