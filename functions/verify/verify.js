@@ -10,7 +10,7 @@ exports.handler = async function (event) {
         const res = await axios.post(api);
         return {
             statusCode: 200,
-            body: res.data
+            body: JSON.stringify(res.data)
         }
     } catch (e) {
         console.log(e);
