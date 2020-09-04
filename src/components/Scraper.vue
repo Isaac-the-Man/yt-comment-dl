@@ -242,10 +242,8 @@ export default {
       this.isLoading = false;
     },
     async verify(token) {
-      const res = await this.axios.get('https://app.netlify.com/sites/youtube-comment-downloader/functions/verify', {
+      const res = await this.axios.post('https://app.netlify.com/sites/youtube-comment-downloader/functions/verify', {
         token: token
-      }, {
-        headers: {}
       });
       console.log(res);
     }

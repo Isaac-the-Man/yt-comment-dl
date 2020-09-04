@@ -8,7 +8,11 @@ const headers = {
 
 exports.handler = async function (event) {
     if (event.httpMethod !== 'POST') {
-        return {statusCode: 405, headers, body: 'Method Not Allowed'};
+        return {
+            statusCode: 405,
+            headers,
+            body: 'Method Not Allowed'
+        };
     }
     const secret = process.env.GOOGLE_RECAPTCHA_SECRET;
     const body = JSON.parse(event.body);
