@@ -183,6 +183,7 @@ export default {
       await this.$recaptchaLoaded();
       const token = await this.$recaptcha('queryComments');
       console.log(token);
+      await this.verify(token);
 
       this.isLoading = true;
       let loadCount = this.loadConfig.count;
@@ -239,6 +240,14 @@ export default {
       this.progressBar.max = 100;
       this.progressBar.show = false;
       this.isLoading = false;
+    },
+    async verify(token) {
+      const res = await this.axios.get('https://app.netlify.com/sites/youtube-comment-downloader/functions/verify', {
+        token: token
+      }, {
+        headers: {}
+      });
+      console.log(res);
     }
   }
 }
