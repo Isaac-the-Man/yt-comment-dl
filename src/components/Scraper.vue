@@ -242,9 +242,7 @@ export default {
       this.isLoading = false;
     },
     async verify(token) {
-      const res = await this.axios.post('https://app.netlify.com/sites/youtube-comment-downloader/functions/verify', {
-        token: token
-      });
+      const res = await this.axios.post('https://app.netlify.com/sites/youtube-comment-downloader/functions/verify', 'token=' + token);
       console.log(res);
     }
   }

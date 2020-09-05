@@ -9,7 +9,7 @@ const headers = {
 exports.handler = async function (event) {
     if (event.httpMethod !== 'POST') {
         return {
-            statusCode: 405,
+            statusCode: 200,
             headers,
             body: 'Method Not Allowed'
         };
