@@ -169,8 +169,6 @@ export default {
       try {
         const api = `https://www.googleapis.com/youtube/v3/commentThreads?key=AIzaSyA8Jd2Dck4YCKeRORQIJ_oRFeZMzgMAzDg&videoId=${this.videoID}&maxResults=${count}&order=${order}&pageToken=${nextPageToken}&part=snippet`;
         const res = await this.axios.get(api);
-        console.log(res.data.nextPageToken);
-        console.log(res.data.pageInfo);
         return res.data;
       } catch (e) {
         console.log(e);
@@ -179,12 +177,15 @@ export default {
     // load the specified amount of comments into memory
     async loadComments(e) {
       e.preventDefault();
-
+      // recaptcha
       await this.$recaptchaLoaded();
       const token = await this.$recaptcha('queryComments');
-      console.log(token);
-      await this.verify(token);
-
+      const isVerified = await this.verify(token);
+      if (!isVerified) {
+        this.status = 'bot scraping no allowed.';
+        return;
+      }
+      // processing
       this.isLoading = true;
       let loadCount = this.loadConfig.count;
       let tmpPageToken = '';
@@ -216,6 +217,15 @@ export default {
     // download every loaded comments
     async downloadAll(e) {
       e.preventDefault();
+      // recaptcha
+      await this.$recaptchaLoaded();
+      const token = await this.$recaptcha('queryComments');
+      const isVerified = await this.verify(token);
+      if (!isVerified) {
+        this.status = 'bot scraping no allowed.';
+        return;
+      }
+      // processing
       this.isLoading = true;
       this.progressBar.show = true;
       this.paginator.currentPage = 1;
@@ -245,7 +255,7 @@ export default {
       const res = await this.axios.post('https://youtube-comment-downloader.netlify.app/.netlify/functions/verify', {
         token: token
       });
-      console.log(res);
+      return res.status === 200 && res.data.success && res.data.score > 0.3;
     }
   }
 }

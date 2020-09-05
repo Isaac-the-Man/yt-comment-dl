@@ -10,7 +10,13 @@ import { VueReCaptcha } from 'vue-recaptcha-v3'
 Vue.config.productionTip = false
 
 Vue.use(VueAxios, axios);
-Vue.use(VueReCaptcha, { siteKey: '6Le2_sYZAAAAAOeR64sqL_QBBzFDELxY5WZoMXx5' });
+Vue.use(VueReCaptcha, {
+  siteKey: '6Le2_sYZAAAAAOeR64sqL_QBBzFDELxY5WZoMXx5',
+  loaderOptions: {
+    useRecaptchaNet: true,
+    autoHideBadge: true
+  }
+});
 
 new Vue({
   render: h => h(App),

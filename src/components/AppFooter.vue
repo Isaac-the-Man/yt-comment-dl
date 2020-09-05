@@ -1,13 +1,24 @@
 <template>
-  <div class="fixed-bottom d-flex justify-content-between px-3">
-    <p>© 2020~ Yu-Kai "Steven" Wang</p>
-    <b-link href="https://github.com/Isaac-the-Man">@Github</b-link>
+  <div>
+    <!-- recaptcha req -->
+    <hr>
+    <div class="text-center">
+      This site is protected by reCAPTCHA and the Google
+      <b-link href="https://policies.google.com/privacy">Privacy Policy</b-link>
+      and
+      <b-link href="https://policies.google.com/terms">Terms of Service</b-link>
+      apply.
+      <!-- bio -->
+      <p>© 2020~ Yu-Kai "Steven" Wang
+        <b-link href="https://github.com/Isaac-the-Man/yt-comment-dl">@Github</b-link>
+      </p>
+    </div>
   </div>
 </template>
 
 <script>
 export default {
-name: "AppFooter"
+  name: "AppFooter"
 }
 </script>
 
